@@ -1,19 +1,15 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
-@Entity()
-export class User {
-  @PrimaryGeneratedColumn()
+@Entity('user')
+export class UserTable {
+  @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
     id: number
 
-  @Column({ nullable: false })
+  @Column({
+    type: 'varchar', name: 'username'
+  })
     username: string
 
-  @Column({ nullable: false })
+  @Column({ type: 'varchar', name: 'password' })
     password: string
-
-  @Column()
-    createAt: string
-
-  @Column()
-    updateAt: string
 }
