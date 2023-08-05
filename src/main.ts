@@ -5,7 +5,9 @@ import { swaggerOptions } from './swagger'
 import { ResponseInterceptor } from './common/interceptor/res.interceptor'
 
 async function bootstrap () {
-  const app = await NestFactory.create(AppModule)
+  const app = await NestFactory.create(AppModule, {
+    // logger: ['warn', 'error']  打印日志的类别
+  })
   // swagger注入
   SwaggerModule.setup('api', app, SwaggerModule.createDocument(app, swaggerOptions))
 
