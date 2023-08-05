@@ -29,7 +29,7 @@ export class MomentController {
 
   @Post('/getMomentList')
   @ApiOperation({
-    summary: '用户发布说说'
+    summary: '获取说说列表'
   })
   @NoAuth()
   @UsePipes(new ValidationPipe())
