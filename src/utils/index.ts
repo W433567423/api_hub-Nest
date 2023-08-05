@@ -1,6 +1,6 @@
 import { createHash } from 'crypto'
 import { type ICosConfig } from './type'
-import { COS_BUCKET_NAME, COS_BUCKET_REGION, COS_SECRET_ID, COS_SECRET_KEY } from '../common/config'
+import { COS_BUCKET_NAME, COS_BUCKET_REGION, COS_SECRET_ID, COS_SECRET_KEY } from '../../sercret'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const COS = require('cos-nodejs-sdk-v5')
 
