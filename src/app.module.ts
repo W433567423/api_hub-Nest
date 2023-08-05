@@ -7,6 +7,8 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { UserModule } from './modules/user/user.module'
 import { MySQLConfig } from '../sercret'
 import { AuthController } from './modules/auth/auth.controller'
+import { APP_GUARD } from '@nestjs/core'
+import { AuthGuard } from './common/guard/auth.guard'
 
 @Module({
   imports: [
@@ -14,7 +16,10 @@ import { AuthController } from './modules/auth/auth.controller'
     UserModule
   ],
   controllers: [AppController, UserController, AuthController],
-  providers: [AppService, UserService]
+  providers: [AppService, UserService, {
+    provide: APP_GUARD,
+    useClass: AuthGuard
+  }]
 })
 // export class AppModule implements NestModule {
 //   configure (consumer: MiddlewareConsumer) {

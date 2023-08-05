@@ -18,6 +18,7 @@ import { PRIVATE_KEY, PUBLIC_KEY } from '../../../sercret'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { UserService } from '../user/user.service'
 import { AuthGuard } from '../../common/guard/auth.guard'
+import { NoAuth } from '../../common/decorators'
 
 @Controller()
 @ApiTags('鉴权系统')
@@ -27,6 +28,7 @@ export class AuthController {
 
   @Post('/login')
   @ApiOperation({ summary: '用户登录' })
+  @NoAuth()
   @UsePipes(new ValidationPipe())
   @HttpCode(HttpStatus.OK)
   @ApiResponse({

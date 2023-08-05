@@ -4,6 +4,7 @@ import { UserService } from './user.service'
 import { UserReqDto } from './user.dto'
 import { md5Password } from '../../utils'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { NoAuth } from '../../common/decorators'
 
 // import { AuthInterceptor } from '../../common/interceptor/auth.interceptor'
 
@@ -15,6 +16,7 @@ export class UserController {
 
   @Post('/registry')
   @ApiOperation({ summary: '用户注册', description: '注册新用户' })
+  @NoAuth()
   @UsePipes(new ValidationPipe())
   @HttpCode(HttpStatus.OK)
   @ApiResponse({
