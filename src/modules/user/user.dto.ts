@@ -8,5 +8,5 @@ export class UserDto {
 
   @ApiProperty({ example: '123456', description: '密码' })
   @IsNotEmpty({ message: '密码不能为空' })
-  readonly password: string
+    password: string
 }
