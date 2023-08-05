@@ -11,8 +11,16 @@ export class UserService {
   ) {
   }
 
-  // findByName(username: string): Promise<UserTable[]> {
-  //     console.log(username)
-  //     return this.userRepository.findBy({username})
-  // }
+  // 通过username寻找
+  findByName (username: string): Promise<UserTable[]> {
+    return this.userRepository.findBy({ username })
+  }
+
+  // 增加一个用户
+  create (username: string, password: string): Promise<UserTable> {
+    return this.userRepository.save({
+      username,
+      password
+    })
+  }
 }

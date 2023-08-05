@@ -14,7 +14,7 @@ import { UserModule } from './modules/user/user.module'
       port: 23423,
       username: 'root',
       password: 'Tutu7331*',
-      database: 'hub',
+      database: 'hub-Nest',
       autoLoadEntities: true,
       // 数据库同步更新
       synchronize: true
