@@ -1,5 +1,5 @@
 import { Body, Controller, HttpCode, HttpException, HttpStatus, Post, UsePipes, ValidationPipe } from '@nestjs/common'
-import { ApiOperation, ApiResponse } from '@nestjs/swagger'
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { UserReqDto, UserResDto } from '../user/user.dto'
 import { md5Password } from '../../utils'
 import { sign, verify } from 'jsonwebtoken'
@@ -8,6 +8,7 @@ import { PRIVATE_KEY, PUBLIC_KEY } from '../../../sercret'
 import { UserService } from '../user/user.service'
 
 @Controller()
+@ApiTags('鉴权系统')
 export class AuthController {
   constructor (private readonly UserService: UserService) {
   }

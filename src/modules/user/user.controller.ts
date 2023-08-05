@@ -6,7 +6,7 @@ import { md5Password } from '../../utils'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 @Controller('user')
-@ApiTags('user')
+@ApiTags('用户系统')
 export class UserController {
   constructor (private readonly UserService: UserService) {
   }
