@@ -18,4 +18,12 @@ export class MomentService {
       content
     })
   }
+
+  // 查询moment列表
+  getMomentList (page: number, size: number): Promise<MomentTable[]> {
+    return this.momentRepository.find({
+      skip: page,
+      take: size
+    })
+  }
 }

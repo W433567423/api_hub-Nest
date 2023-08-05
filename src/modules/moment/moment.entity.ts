@@ -3,7 +3,7 @@ import { UserTable } from '../user/user.entity'
 import { AppTable } from '../../app.entity'
 
 @Entity('moment')
-export class MomentTable {
+export class MomentTable extends AppTable {
   @PrimaryGeneratedColumn({
     type: 'int',
     name: 'id'
@@ -21,9 +21,6 @@ export class MomentTable {
     name: 'user_id'
   })
     userId: number
-
-  @Column(() => AppTable)
-    AppTable: AppTable
 
   @OneToMany(() => UserTable, (user) => user.id)
     moments: MomentTable[]

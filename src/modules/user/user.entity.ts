@@ -2,7 +2,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 import { AppTable } from '../../app.entity'
 
 @Entity('user')
-export class UserTable {
+export class UserTable extends AppTable {
   @PrimaryGeneratedColumn({
     type: 'int',
     name: 'id'
@@ -20,7 +20,4 @@ export class UserTable {
     name: 'password'
   })
     password: string
-
-  @Column(() => AppTable)
-    AppTable: AppTable
 }
