@@ -23,4 +23,9 @@ export class UserService {
       password
     })
   }
+
+  // 比对密码
+  findByPassword (username: string, password: string): Promise<UserTable[]> {
+    return this.userRepository.findBy({ username, password })
+  }
 }
