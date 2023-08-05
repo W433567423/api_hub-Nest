@@ -9,17 +9,21 @@ import { MySQLConfig } from '../sercret'
 import { AuthController } from './modules/auth/auth.controller'
 import { APP_GUARD } from '@nestjs/core'
 import { AuthGuard } from './common/guard/auth.guard'
+import { MomentController } from './modules/moment/moment.controller'
+import { MomentService } from './modules/moment/moment.service'
+import { MomentModule } from './modules/moment/moment.module'
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(MySQLConfig),
-    UserModule
+    UserModule,
+    MomentModule
   ],
-  controllers: [AppController, UserController, AuthController],
-  providers: [AppService, UserService, {
+  controllers: [AppController, UserController, AuthController, MomentController],
+  providers: [AppService, {
     provide: APP_GUARD,
     useClass: AuthGuard
-  }]
+  }, UserService, MomentService]
 })
 // export class AppModule implements NestModule {
 //   configure (consumer: MiddlewareConsumer) {

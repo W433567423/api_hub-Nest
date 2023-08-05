@@ -1,5 +1,4 @@
 import { Body, Controller, HttpCode, HttpException, HttpStatus, Post, UsePipes, ValidationPipe } from '@nestjs/common'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { UserService } from './user.service'
 import { UserReqDto } from './user.dto'
 import { md5Password } from '../../utils'
@@ -15,7 +14,10 @@ export class UserController {
   }
 
   @Post('/registry')
-  @ApiOperation({ summary: '用户注册', description: '注册新用户' })
+  @ApiOperation({
+    summary: '用户注册',
+    description: '注册新用户'
+  })
   @NoAuth()
   @UsePipes(new ValidationPipe())
   @HttpCode(HttpStatus.OK)
