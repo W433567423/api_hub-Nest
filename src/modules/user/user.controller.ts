@@ -5,6 +5,8 @@ import { UserReqDto } from './user.dto'
 import { md5Password } from '../../utils'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
+// import { AuthInterceptor } from '../../common/interceptor/auth.interceptor'
+
 @Controller('user')
 @ApiTags('用户系统')
 export class UserController {

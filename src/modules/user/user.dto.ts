@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { IsNotEmpty, IsString } from 'class-validator'
 
-class resDto {
+export class resDto {
   @ApiProperty({ description: 'success' })
   readonly msg: string
 }
@@ -26,4 +26,8 @@ export class UserResDto extends resDto {
 
   @ApiProperty({ description: '用户id' })
   readonly id: number
+}
+
+export class IUserReq extends Request {
+  user: { id: number, username: string }
 }

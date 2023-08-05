@@ -1,11 +1,23 @@
-import { Body, Controller, HttpCode, HttpException, HttpStatus, Post, UsePipes, ValidationPipe } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpException,
+  HttpStatus,
+  Post,
+  Req,
+  UseGuards,
+  UsePipes,
+  ValidationPipe
+} from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
-import { UserReqDto, UserResDto } from '../user/user.dto'
+import { IUserReq, resDto, UserReqDto, UserResDto } from '../user/user.dto'
 import { md5Password } from '../../utils'
 import { sign, verify } from 'jsonwebtoken'
 import { PRIVATE_KEY, PUBLIC_KEY } from '../../../sercret'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { UserService } from '../user/user.service'
+import { AuthGuard } from '../../common/guard/auth.guard'
 
 @Controller()
 @ApiTags('鉴权系统')
@@ -46,6 +58,25 @@ export class AuthController {
         ...user,
         token
       }
+    }
+  }
+
+  @Post('/test')
+  @ApiTags('鉴权系统')
+  @ApiOperation({ summary: '鉴权测试' })
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    status: 200,
+    description: '成功返回200，失败返回401',
+    type: resDto
+  })
+
+  async test (@Req() req: IUserReq) {
+    console.log(req.user)
+    return {
+      msg: 'success',
+      data: 'ok'
     }
   }
 }
