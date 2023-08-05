@@ -1,16 +1,17 @@
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
+import { SwaggerModule } from '@nestjs/swagger'
+import { swaggerOptions } from './swagger'
+import { ResponseInterceptor } from './common/interceptor/res.interceptor'
 
 async function bootstrap () {
   const app = await NestFactory.create(AppModule)
-  const options = new DocumentBuilder()
-    .setTitle('Hub API')
-    .setDescription('A swagger for hub API')
-    .setVersion('1.0')
-    .build()
-  const document = SwaggerModule.createDocument(app, options)
-  SwaggerModule.setup('api', app, document)
+  // swagger注入
+  SwaggerModule.setup('api', app, SwaggerModule.createDocument(app, swaggerOptions))
+
+  // 注册全局通用响应拦截器
+  app.useGlobalInterceptors(new ResponseInterceptor())
+
   await app.listen(3000)
 }
 

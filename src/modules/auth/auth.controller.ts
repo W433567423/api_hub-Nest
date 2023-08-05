@@ -53,11 +53,8 @@ export class AuthController {
     console.log('尝试解密')
     console.log(verify(token, PUBLIC_KEY, { algorithms: ['RS256'] }))
     return {
-      msg: 'success',
-      data: {
-        ...user,
-        token
-      }
+      ...user,
+      token
     }
   }
 
@@ -74,9 +71,5 @@ export class AuthController {
 
   async test (@Req() req: IUserReq) {
     console.log(req.user)
-    return {
-      msg: 'success',
-      data: 'ok'
-    }
   }
 }

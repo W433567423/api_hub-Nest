@@ -33,11 +33,6 @@ export class UserController {
       throw new HttpException('用户名已被注册', HttpStatus.CONFLICT)
     }
     await this.UserService.create(username, password)
-    return {
-      msg: 'success',
-      data: {
-        username
-      }
-    }
+    return '注冊成功'
   }
 }
