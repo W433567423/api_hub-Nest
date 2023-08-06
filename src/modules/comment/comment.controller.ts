@@ -1,7 +1,19 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Req, UsePipes, ValidationPipe } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  Req,
+  UsePipes,
+  ValidationPipe
+} from '@nestjs/common'
 import { CommentService } from './comment.service'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
-import { publishReqBodyCommentDto, replyReqBodyCommentDto } from './comment.dto'
+import { changeReqBodyCommentDto, publishReqBodyCommentDto, replyReqBodyCommentDto } from './comment.dto'
 import { IUserReq } from '../user/user.dto'
 
 @Controller('comment')
@@ -38,5 +50,21 @@ export class CommentController {
   async replyComment (@Body() reqBody: replyReqBodyCommentDto, @Req() req: IUserReq) {
     await this.CommentService.insert(reqBody.momentId, reqBody.content, req.user.id, reqBody.commentId)
     return '发布成功'
+  }
+
+  @Patch('/changeComment/:commentId')
+  @ApiOperation({
+    summary: '用户修改说说的评论'
+  })
+  @UsePipes(new ValidationPipe())
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    status: 200,
+    description: '成功返回200，失败返回400'
+  })
+  async changeComment (@Body() reqBody: changeReqBodyCommentDto, @Req() req: IUserReq, @Param('commentId', ParseIntPipe) commentId: number) {
+    // await this.CommentService.insert(reqBody.momentId, reqBody.content, req.user.id, reqBody.commentId)
+    await this.CommentService.changeCommentById(commentId, reqBody.content, req.user.id)
+    return '修改成功'
   }
 }

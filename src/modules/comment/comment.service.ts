@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { type InsertResult, Repository } from 'typeorm'
+import { type InsertResult, Repository, type UpdateResult } from 'typeorm'
 import { CommentTable } from './commnet.entity'
 
 @Injectable()
@@ -11,6 +11,7 @@ export class CommentService {
   ) {
   }
 
+  // 新增一条comment
   insert (momentId: number, content: string, userId: number, commentId?: number): Promise<InsertResult> {
     return this.commentRepository.insert({
       content,
@@ -18,5 +19,14 @@ export class CommentService {
       userId,
       commentId
     })
+  }
+
+  // 修改comment内容
+  changeCommentById (momentId: number, content: string, userId: number): Promise<UpdateResult> {
+    return this.commentRepository.update(
+      momentId, {
+        content,
+        userId
+      })
   }
 }
