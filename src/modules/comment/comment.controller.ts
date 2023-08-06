@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpCode,
   HttpException,
   HttpStatus,
@@ -17,6 +18,7 @@ import { CommentService } from './comment.service'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { changeReqBodyCommentDto, publishReqBodyCommentDto, replyReqBodyCommentDto } from './comment.dto'
 import { IUserReq } from '../user/user.dto'
+import { NoAuth } from '../../common/decorators'
 
 @Controller('comment')
 @ApiTags('评论系统')
@@ -90,5 +92,20 @@ export class CommentController {
     }
     await this.CommentService.deleteCommentById(commentId)
     return '删除成功'
+  }
+
+  @Get('/getCommentList/:momentId')
+  @ApiOperation({
+    summary: '获取moment的说说的列表'
+  })
+  @NoAuth()
+  @UsePipes(new ValidationPipe())
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    status: 200,
+    description: '成功返回200，失败返回400'
+  })
+  async getCommentList (@Param('momentId', ParseIntPipe) momentId: number) {
+    return await this.CommentService.getCommentList(momentId)
   }
 }

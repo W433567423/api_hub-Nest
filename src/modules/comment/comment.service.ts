@@ -43,4 +43,9 @@ export class CommentService {
     return this.commentRepository.delete(
       momentId)
   }
+
+  // 查询comment列表
+  getCommentList (momentId: number): Promise<CommentTable[]> {
+    return this.commentRepository.find({ relations: ['user'], where: { momentId } })
+  }
 }
