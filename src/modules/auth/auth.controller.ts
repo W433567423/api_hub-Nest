@@ -11,7 +11,7 @@ import {
   ValidationPipe
 } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
-import { IUserReq, resDto, UserReqDto, UserResDto } from '../user/user.dto'
+import { IUserReq, UserReqDto, UserResDto } from '../user/user.dto'
 import { md5Password } from '../../utils'
 import { sign, verify } from 'jsonwebtoken'
 import { PRIVATE_KEY, PUBLIC_KEY } from '../../../sercret'
@@ -19,6 +19,7 @@ import { PRIVATE_KEY, PUBLIC_KEY } from '../../../sercret'
 import { UserService } from '../user/user.service'
 import { AuthGuard } from '../../common/guard/auth.guard'
 import { NoAuth } from '../../common/decorators'
+import { resDto } from '../../app.dto'
 
 @Controller()
 @ApiTags('鉴权系统')
@@ -46,7 +47,10 @@ export class AuthController {
     if (ResUser.length === 0) {
       throw new HttpException('密码不正确', HttpStatus.FORBIDDEN)
     }
-    const user = { id: ResUser[0].id, username: ResUser[0].username }
+    const user = {
+      id: ResUser[0].id,
+      username: ResUser[0].username
+    }
     // 非对称加密生成token
     const token = sign(user, PRIVATE_KEY, {
       expiresIn: 60 * 60 * 24 * 7,

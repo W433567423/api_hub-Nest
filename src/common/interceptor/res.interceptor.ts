@@ -27,7 +27,7 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
         return {
           code: 200,
           path: request.url,
-          message: '请求成功',
+          msg: 'success',
           data
         }
       })

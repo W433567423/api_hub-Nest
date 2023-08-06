@@ -1,4 +1,17 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Query, Req, UsePipes, ValidationPipe } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  ParseIntPipe,
+  Post,
+  Query,
+  Req,
+  UsePipes,
+  ValidationPipe
+} from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { MomentService } from './moment.service'
 import { listReqParmaDto, publishReqBodyDto } from './moment.dto'
@@ -41,5 +54,20 @@ export class MomentController {
   async getMomentList (@Query() reqData: listReqParmaDto) {
     console.log(reqData.page)
     return await this.MomentService.getMomentList(Number(reqData.page), Number(reqData.size))
+  }
+
+  @Get('/getMomentDetail/:momentId')
+  @ApiOperation({
+    summary: '获取说说列表'
+  })
+  @NoAuth()
+  @UsePipes(new ValidationPipe())
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    status: 200,
+    description: '成功返回200，失败返回400'
+  })
+  async getMomentDetail (@Param('momentId', ParseIntPipe) momentId: number) {
+    return await this.MomentService.getMomentDetail(momentId)
   }
 }

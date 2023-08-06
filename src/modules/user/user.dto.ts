@@ -1,18 +1,20 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { IsNotEmpty, IsString } from 'class-validator'
-
-export class resDto {
-  @ApiProperty({ description: 'success' })
-  readonly msg: string
-}
+import { resDto } from '../../app.dto'
 
 export class UserReqDto {
-  @ApiProperty({ example: 'tutu', description: '用户名' })
+  @ApiProperty({
+    example: 'tutu',
+    description: '用户名'
+  })
   @IsNotEmpty({ message: '用户名不能为空' })
   @IsString()
   readonly username: string
 
-  @ApiProperty({ example: '123456', description: '密码' })
+  @ApiProperty({
+    example: '123456',
+    description: '密码'
+  })
   @IsNotEmpty({ message: '密码不能为空' })
     password: string
 }

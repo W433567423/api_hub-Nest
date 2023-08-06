@@ -26,4 +26,9 @@ export class MomentService {
       take: size
     })
   }
+
+  // 查询moment详情
+  getMomentDetail (momentId: number): Promise<MomentTable[]> {
+    return this.momentRepository.findBy({ id: momentId })
+  }
 }

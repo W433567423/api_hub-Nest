@@ -1,11 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { IsNotEmpty, IsString } from 'class-validator'
 
-export class resDto {
-  @ApiProperty({ description: 'success' })
-  readonly msg: string
-}
-
 // 用于发布的req Body类型
 export class publishReqBodyDto {
   @ApiProperty({
