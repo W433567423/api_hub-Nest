@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { type InsertResult, Repository, type UpdateResult } from 'typeorm'
+import { type DeleteResult, type InsertResult, Repository, type UpdateResult } from 'typeorm'
 import { CommentTable } from './commnet.entity'
 
 @Injectable()
@@ -9,6 +9,15 @@ export class CommentService {
     @InjectRepository(CommentTable)
     private readonly commentRepository: Repository<CommentTable>
   ) {
+  }
+
+  getCommentByUserIdAndCommentId (commentId: number, userId: number) {
+    return this.commentRepository.find({
+      where: {
+        userId,
+        commentId
+      }
+    })
   }
 
   // 新增一条comment
@@ -28,5 +37,11 @@ export class CommentService {
         content,
         userId
       })
+  }
+
+  // 删除comment
+  deleteCommentById (momentId: number): Promise<DeleteResult> {
+    return this.commentRepository.delete(
+      momentId)
   }
 }

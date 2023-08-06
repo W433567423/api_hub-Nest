@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   HttpCode,
+  HttpException,
   HttpStatus,
   Param,
   ParseIntPipe,
@@ -63,8 +64,30 @@ export class CommentController {
     description: '成功返回200，失败返回400'
   })
   async changeComment (@Body() reqBody: changeReqBodyCommentDto, @Req() req: IUserReq, @Param('commentId', ParseIntPipe) commentId: number) {
-    // await this.CommentService.insert(reqBody.momentId, reqBody.content, req.user.id, reqBody.commentId)
+    const commentRes = await this.CommentService.getCommentByUserIdAndCommentId(commentId, req.user.id)
+    if (!commentRes.length) {
+      throw new HttpException('moment不存在或无权限', HttpStatus.UNAUTHORIZED)
+    }
     await this.CommentService.changeCommentById(commentId, reqBody.content, req.user.id)
     return '修改成功'
+  }
+
+  @Patch('/deleteComment/:commentId')
+  @ApiOperation({
+    summary: '用户删除说说的评论'
+  })
+  @UsePipes(new ValidationPipe())
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    status: 200,
+    description: '成功返回200，失败返回400'
+  })
+  async deleteComment (@Req() req: IUserReq, @Param('commentId', ParseIntPipe) commentId: number) {
+    const commentRes = await this.CommentService.getCommentByUserIdAndCommentId(commentId, req.user.id)
+    if (!commentRes.length) {
+      throw new HttpException('moment不存在或无权限', HttpStatus.UNAUTHORIZED)
+    }
+    await this.CommentService.deleteCommentById(commentId)
+    return '删除成功'
   }
 }

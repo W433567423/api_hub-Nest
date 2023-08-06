@@ -54,7 +54,6 @@ export class MomentController {
     description: '成功返回200，失败返回400'
   })
   async getMomentList (@Query() reqData: listReqParmaMomentDto) {
-    console.log(reqData.page)
     return await this.MomentService.getMomentList(Number(reqData.page), Number(reqData.size))
   }
 
