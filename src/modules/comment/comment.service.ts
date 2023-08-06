@@ -12,11 +12,10 @@ export class CommentService {
   }
 
   getCommentByUserIdAndCommentId (commentId: number, userId: number) {
-    return this.commentRepository.find({
-      where: {
-        userId,
-        commentId
-      }
+    console.log(commentId, userId)
+    return this.commentRepository.findBy({
+      userId,
+      id: commentId
     })
   }
 

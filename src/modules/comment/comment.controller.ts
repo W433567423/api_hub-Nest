@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   HttpCode,
   HttpException,
   HttpStatus,
@@ -72,7 +73,7 @@ export class CommentController {
     return '修改成功'
   }
 
-  @Patch('/deleteComment/:commentId')
+  @Delete('/deleteComment/:commentId')
   @ApiOperation({
     summary: '用户删除说说的评论'
   })
