@@ -1,8 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
+  HttpException,
   HttpStatus,
   Param,
   ParseIntPipe,
@@ -35,7 +37,6 @@ export class MomentController {
     description: '成功返回200，失败返回400'
   })
   async publishMoment (@Body() reqData: publishReqBodyDto, @Req() req: IUserReq) {
-    console.log(req.user)
     await this.MomentService.create(req.user.id, reqData.content)
     return '发布成功'
   }
@@ -69,5 +70,24 @@ export class MomentController {
   })
   async getMomentDetail (@Param('momentId', ParseIntPipe) momentId: number) {
     return await this.MomentService.getMomentDetail(momentId)
+  }
+
+  @Delete('/deleteMoment/:momentId')
+  @ApiOperation({
+    summary: '删除说说'
+  })
+  @UsePipes(new ValidationPipe())
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    status: 200,
+    description: '成功返回200，失败返回400'
+  })
+  async deleteMoment (@Param('momentId', ParseIntPipe) momentId: number, @Req() req: IUserReq) {
+    const momentRes = await this.MomentService.getMomentByUserIdAndMomentId(momentId, req.user.id)
+    if (!momentRes.length) {
+      throw new HttpException('moment不存在或无权限', HttpStatus.UNAUTHORIZED)
+    }
+    await this.MomentService.deleteMomentById(momentId)
+    return '删除成功'
   }
 }

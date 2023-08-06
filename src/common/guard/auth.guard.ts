@@ -4,6 +4,7 @@ import { PUBLIC_KEY } from '../../../sercret'
 import { IS_PUBLIC_KEY } from '../decorators'
 import { Reflector } from '@nestjs/core'
 
+// 登录拦截
 @Injectable()
 export class AuthGuard implements CanActivate {
   // 跳过鉴权(也可用@Public)

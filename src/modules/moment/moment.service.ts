@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
+import { type DeleteResult, Repository } from 'typeorm'
 import { MomentTable } from './moment.entity'
 
 @Injectable()
@@ -30,5 +30,18 @@ export class MomentService {
   // 查询moment详情
   getMomentDetail (momentId: number): Promise<MomentTable[]> {
     return this.momentRepository.findBy({ id: momentId })
+  }
+
+  // 查询moment通过userId和momentId
+  getMomentByUserIdAndMomentId (momentId: number, userId: number): Promise<MomentTable[]> {
+    return this.momentRepository.findBy({
+      id: momentId,
+      userId
+    })
+  }
+
+  // 删除moment by id
+  deleteMomentById (momentId: number): Promise<DeleteResult> {
+    return this.momentRepository.delete(momentId)
   }
 }
