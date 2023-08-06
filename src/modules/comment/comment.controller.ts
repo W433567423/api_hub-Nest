@@ -21,8 +21,8 @@ export class CommentController {
     description: '成功返回200，失败返回400'
   })
   async publishMoment (@Body() reqBody: publishReqBodyCommentDto, @Req() req: IUserReq) {
-    // await this.MomentService.insert(req.user.id, reqBody.content)
     await this.CommentService.insert(reqBody.momentId, reqBody.content, req.user.id)
+    console.log(await this.CommentService.insert(reqBody.momentId, reqBody.content, req.user.id))
     return '发布成功'
   }
 }

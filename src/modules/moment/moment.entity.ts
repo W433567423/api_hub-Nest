@@ -1,6 +1,7 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { UserTable } from '../user/user.entity'
 import { AppTable } from '../../app.entity'
+import { CommentTable } from '../comment/commnet.entity'
 
 @Entity('moment')
 export class MomentTable extends AppTable {
@@ -15,13 +16,17 @@ export class MomentTable extends AppTable {
     name: 'content'
   })
     content: string
+  //
+  // @Column({
+  //   type: 'int',
+  //   name: 'user_id'
+  // })
+  //   userId: number
 
-  @Column({
-    type: 'int',
-    name: 'user_id'
-  })
+  @ManyToOne(() => UserTable, (user) => user.moments)
+  @JoinColumn({ name: 'user_id' })
     userId: number
 
-  @OneToMany(() => UserTable, (user) => user.id)
-    moments: MomentTable[]
+  @OneToMany(() => CommentTable, (commont) => commont.momentId)
+    comments: CommentTable[]
 }

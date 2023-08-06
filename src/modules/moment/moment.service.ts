@@ -23,13 +23,17 @@ export class MomentService {
   getMomentList (page: number, size: number): Promise<MomentTable[]> {
     return this.momentRepository.find({
       skip: page,
-      take: size
+      take: size,
+      relations: ['comments']
     })
   }
 
   // 查询moment详情
-  getMomentDetail (momentId: number): Promise<MomentTable[]> {
-    return this.momentRepository.findBy({ id: momentId })
+  getMomentDetail (momentId: number): Promise<MomentTable | null> {
+    return this.momentRepository.findOne({
+      where: { id: momentId },
+      relations: ['comments']
+    })
   }
 
   // 查询moment通过userId和momentId
