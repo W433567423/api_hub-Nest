@@ -35,7 +35,7 @@ export class AuthGuard implements CanActivate {
       // }
       if (token) {
         try {
-          console.log('鉴权成功')
+          console.log('鉴权成功', verify(token, PUBLIC_KEY, { algorithms: ['RS256'] }))
           request.user = verify(token, PUBLIC_KEY, { algorithms: ['RS256'] })
           return true
         } catch {

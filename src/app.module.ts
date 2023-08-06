@@ -12,12 +12,14 @@ import { AuthGuard } from './common/guard/auth.guard'
 import { MomentController } from './modules/moment/moment.controller'
 import { MomentService } from './modules/moment/moment.service'
 import { MomentModule } from './modules/moment/moment.module'
+import { CommentModule } from './modules/comment/comment.module'
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(MySQLConfig),
     UserModule,
-    MomentModule
+    MomentModule,
+    CommentModule
   ],
   controllers: [AppController, UserController, AuthController, MomentController],
   providers: [AppService, {
@@ -25,6 +27,7 @@ import { MomentModule } from './modules/moment/moment.module'
     useClass: AuthGuard
   }, UserService, MomentService]
 })
+// 中间件
 // export class AppModule implements NestModule {
 //   configure (consumer: MiddlewareConsumer) {
 //     consumer

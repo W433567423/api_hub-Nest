@@ -17,7 +17,7 @@ import {
 } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { MomentService } from './moment.service'
-import { listReqParmaDto, publishReqBodyDto } from './moment.dto'
+import { listReqParmaMomentDto, publishReqBodyMomentDto } from './moment.dto'
 import { IUserReq } from '../user/user.dto'
 import { NoAuth } from '../../common/decorators'
 
@@ -37,7 +37,7 @@ export class MomentController {
     status: 200,
     description: '成功返回200，失败返回400'
   })
-  async publishMoment (@Body() reqData: publishReqBodyDto, @Req() req: IUserReq) {
+  async publishMoment (@Body() reqData: publishReqBodyMomentDto, @Req() req: IUserReq) {
     await this.MomentService.insert(req.user.id, reqData.content)
     return '发布成功'
   }
@@ -53,7 +53,7 @@ export class MomentController {
     status: 200,
     description: '成功返回200，失败返回400'
   })
-  async getMomentList (@Query() reqData: listReqParmaDto) {
+  async getMomentList (@Query() reqData: listReqParmaMomentDto) {
     console.log(reqData.page)
     return await this.MomentService.getMomentList(Number(reqData.page), Number(reqData.size))
   }

@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger'
 import { IsNotEmpty, IsString } from 'class-validator'
 
 // 用于发布的req Body类型
-export class publishReqBodyDto {
+export class publishReqBodyMomentDto {
   @ApiProperty({
     example: '今天天气真好',
     description: '说说内容'
@@ -13,7 +13,7 @@ export class publishReqBodyDto {
 }
 
 // 用于发布的req Body类型
-export class listReqParmaDto {
+export class listReqParmaMomentDto {
   @ApiProperty({
     example: 0,
     description: '页码'
