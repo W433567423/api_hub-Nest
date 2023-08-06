@@ -29,6 +29,13 @@ export class CommentTable extends AppTable {
   })
     userId: number
 
+  @Column({
+    type: 'int',
+    name: 'comment_id',
+    default: null
+  })
+    commentId: number
+
   @ManyToOne(() => MomentTable, (moment) => moment.comments)
   @JoinColumn({ name: 'moment_id' })
     moment: MomentTable

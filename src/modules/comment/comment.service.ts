@@ -11,11 +11,12 @@ export class CommentService {
   ) {
   }
 
-  insert (momentId: number, content: string, userId: number): Promise<InsertResult> {
+  insert (momentId: number, content: string, userId: number, commentId?: number): Promise<InsertResult> {
     return this.commentRepository.insert({
       content,
       momentId,
-      userId
+      userId,
+      commentId
     })
   }
 }

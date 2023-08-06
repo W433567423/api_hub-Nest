@@ -1,7 +1,7 @@
 import { Body, Controller, HttpCode, HttpStatus, Post, Req, UsePipes, ValidationPipe } from '@nestjs/common'
 import { CommentService } from './comment.service'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
-import { publishReqBodyCommentDto } from './comment.dto'
+import { publishReqBodyCommentDto, replyReqBodyCommentDto } from './comment.dto'
 import { IUserReq } from '../user/user.dto'
 
 @Controller('comment')
@@ -20,9 +20,23 @@ export class CommentController {
     status: 200,
     description: '成功返回200，失败返回400'
   })
-  async publishMoment (@Body() reqBody: publishReqBodyCommentDto, @Req() req: IUserReq) {
+  async publishComment (@Body() reqBody: publishReqBodyCommentDto, @Req() req: IUserReq) {
     await this.CommentService.insert(reqBody.momentId, reqBody.content, req.user.id)
-    console.log(await this.CommentService.insert(reqBody.momentId, reqBody.content, req.user.id))
+    return '发布成功'
+  }
+
+  @Post('/reply')
+  @ApiOperation({
+    summary: '用户给说说的评论回复评论'
+  })
+  @UsePipes(new ValidationPipe())
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    status: 200,
+    description: '成功返回200，失败返回400'
+  })
+  async replyComment (@Body() reqBody: replyReqBodyCommentDto, @Req() req: IUserReq) {
+    await this.CommentService.insert(reqBody.momentId, reqBody.content, req.user.id, reqBody.commentId)
     return '发布成功'
   }
 }
