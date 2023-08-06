@@ -8,6 +8,7 @@ import {
   HttpStatus,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   Query,
   Req,
@@ -37,7 +38,7 @@ export class MomentController {
     description: '成功返回200，失败返回400'
   })
   async publishMoment (@Body() reqData: publishReqBodyDto, @Req() req: IUserReq) {
-    await this.MomentService.create(req.user.id, reqData.content)
+    await this.MomentService.insert(req.user.id, reqData.content)
     return '发布成功'
   }
 
@@ -89,5 +90,25 @@ export class MomentController {
     }
     await this.MomentService.deleteMomentById(momentId)
     return '删除成功'
+  }
+
+  @Patch('/changeMomentDetail/:momentId')
+  @ApiOperation({
+    summary: '修改说说内容'
+  })
+  @UsePipes(new ValidationPipe())
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    status: 200,
+    description: '成功返回200，失败返回400'
+  })
+  async changeMomentDetail (@Param('momentId', ParseIntPipe) momentId: number, @Body('content') content: string, @Req() req: IUserReq) {
+    const momentRes = await this.MomentService.getMomentByUserIdAndMomentId(momentId, req.user.id)
+    if (!momentRes.length) {
+      throw new HttpException('moment不存在或无权限', HttpStatus.UNAUTHORIZED)
+    }
+    console.log(content)
+    await this.MomentService.changeMomentById(momentId, content)
+    return '修改成功'
   }
 }

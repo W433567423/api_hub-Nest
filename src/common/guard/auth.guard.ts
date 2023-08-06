@@ -40,7 +40,6 @@ export class AuthGuard implements CanActivate {
           return true
         } catch {
           console.log('鉴权失败', token)
-          console.log(verify(token, PUBLIC_KEY, { algorithms: ['RS256'] }))
           throw new HttpException('token验证失败', HttpStatus.UNAUTHORIZED)
         }
       } else {

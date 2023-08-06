@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { type DeleteResult, Repository } from 'typeorm'
+import { type DeleteResult, type InsertResult, Repository, type UpdateResult } from 'typeorm'
 import { MomentTable } from './moment.entity'
 
 @Injectable()
@@ -12,8 +12,8 @@ export class MomentService {
   }
 
   // 新增一条moment
-  create (userId: number, content: string): Promise<MomentTable> {
-    return this.momentRepository.save({
+  insert (userId: number, content: string): Promise<InsertResult> {
+    return this.momentRepository.insert({
       userId,
       content
     })
@@ -43,5 +43,10 @@ export class MomentService {
   // 删除moment by id
   deleteMomentById (momentId: number): Promise<DeleteResult> {
     return this.momentRepository.delete(momentId)
+  }
+
+  // 修改moment by id
+  changeMomentById (momentId: number, content: string): Promise<UpdateResult> {
+    return this.momentRepository.update(momentId, { content })
   }
 }
