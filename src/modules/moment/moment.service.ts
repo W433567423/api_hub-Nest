@@ -24,15 +24,16 @@ export class MomentService {
     return this.momentRepository.find({
       skip: page,
       take: size,
-      relations: ['comments']
+      relations: ['comments', 'user']
     })
   }
 
   // 查询moment详情
   getMomentDetail (momentId: number): Promise<MomentTable | null> {
     return this.momentRepository.findOne({
+      select: ['id', 'content', 'content', 'user'],
       where: { id: momentId },
-      relations: ['comments']
+      relations: ['comments', 'user']
     })
   }
 

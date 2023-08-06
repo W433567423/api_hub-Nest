@@ -23,9 +23,9 @@ export class UserTable extends AppTable {
   })
     password: string
 
-  @ManyToOne(() => MomentTable, moment => moment.userId)
+  @ManyToOne(() => MomentTable, moment => moment.user)
     moments: MomentTable[]
 
-  @ManyToOne(() => CommentTable, comment => comment.userId)
+  @ManyToOne(() => CommentTable, comment => comment.moment)
     comments: CommentTable[]
 }

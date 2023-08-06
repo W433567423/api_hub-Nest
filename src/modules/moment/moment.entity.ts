@@ -16,17 +16,17 @@ export class MomentTable extends AppTable {
     name: 'content'
   })
     content: string
-  //
-  // @Column({
-  //   type: 'int',
-  //   name: 'user_id'
-  // })
-  //   userId: number
+
+  @Column({
+    type: 'int',
+    name: 'user_id'
+  })
+    userId: number
 
   @ManyToOne(() => UserTable, (user) => user.moments)
   @JoinColumn({ name: 'user_id' })
-    userId: number
+    user: UserTable
 
-  @OneToMany(() => CommentTable, (commont) => commont.momentId)
+  @OneToMany(() => CommentTable, (comment) => comment.moment)
     comments: CommentTable[]
 }
