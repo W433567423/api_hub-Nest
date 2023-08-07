@@ -101,13 +101,27 @@ export class MomentController {
     status: 200,
     description: '成功返回200，失败返回400'
   })
-  async changeMomentDetail (@Param('momentId', ParseIntPipe) momentId: number, @Body('content') content: string, @Req() req: IUserReq) {
+  async changeMomentDetail (@Param('momentId', ParseIntPipe) momentId: number, @Body() reqData: publishReqBodyMomentDto, @Req() req: IUserReq) {
     const momentRes = await this.MomentService.getMomentByUserIdAndMomentId(momentId, req.user.id)
     if (!momentRes.length) {
       throw new HttpException('moment不存在或无权限', HttpStatus.UNAUTHORIZED)
     }
-    console.log(content)
-    await this.MomentService.changeMomentById(momentId, content)
+    await this.MomentService.changeMomentById(momentId, reqData.content)
     return '修改成功'
+  }
+
+  @Post('/:momentId/addLabels')
+  @ApiOperation({
+    summary: '给moment打上一系列标签'
+  })
+  @UsePipes(new ValidationPipe())
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    status: 200,
+    description: '成功返回200，失败返回400'
+  })
+  async addLabelsToMoment (@Param('momentId', ParseIntPipe) momentId: number, @Body() labels: string[], @Req() req: IUserReq) {
+    // return await this.MomentService.getMomentList(Number(reqData.page), Number(reqData.size))
+    return '新增标签成功'
   }
 }

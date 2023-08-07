@@ -14,6 +14,7 @@ export class changeReqBodyCommentDto {
 // 用于发布的req Body类型
 export class publishReqBodyCommentDto extends changeReqBodyCommentDto {
   @ApiProperty({
+    type: Number,
     example: '1',
     description: '说说id'
   })
@@ -24,6 +25,7 @@ export class publishReqBodyCommentDto extends changeReqBodyCommentDto {
 
 export class replyReqBodyCommentDto extends publishReqBodyCommentDto {
   @ApiProperty({
+    type: Number,
     example: '1',
     description: '评论id'
   })
