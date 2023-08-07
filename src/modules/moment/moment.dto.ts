@@ -42,5 +42,6 @@ export class addTagsReqBodyMomentDto {
   })
   @IsNotEmpty({ message: '标签列表不能为空' })
   @IsArray()
+  @IsString({ each: true })
   readonly tags: string[]
 }

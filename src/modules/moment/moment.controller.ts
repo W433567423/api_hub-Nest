@@ -17,7 +17,7 @@ import {
 } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { MomentService } from './moment.service'
-import { listReqParmaMomentDto, publishReqBodyMomentDto } from './moment.dto'
+import { addTagsReqBodyMomentDto, listReqParmaMomentDto, publishReqBodyMomentDto } from './moment.dto'
 import { IUserReq } from '../user/user.dto'
 import { NoAuth } from '../../common/decorators'
 
@@ -120,8 +120,9 @@ export class MomentController {
     status: 200,
     description: '成功返回200，失败返回400'
   })
-  async addLabelsToMoment (@Param('momentId', ParseIntPipe) momentId: number, @Body() labels: string[], @Req() req: IUserReq) {
-    // return await this.MomentService.getMomentList(Number(reqData.page), Number(reqData.size))
+  async addLabelsToMoment (@Param('momentId', ParseIntPipe) momentId: number, @Body() reqData: addTagsReqBodyMomentDto, @Req() req: IUserReq) {
+    await this.MomentService.linkMomentLabel(reqData.tags, momentId)
+    console.log(await this.MomentService.isLinkMomentLabel(2, 2))
     return '新增标签成功'
   }
 }

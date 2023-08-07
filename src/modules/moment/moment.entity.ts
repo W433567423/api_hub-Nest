@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { UserTable } from '../user/user.entity'
 import { AppTable } from '../../app.entity'
 import { CommentTable } from '../comment/commnet.entity'
@@ -35,6 +35,7 @@ export class MomentTable extends AppTable {
   // @JoinTable({ name: 'labelId' })
   //   labels: LabelTable[]
 
-  @ManyToMany(() => LabelTable)
-    moments: LabelTable[]
+  @ManyToMany(() => LabelTable, label => label.moments)
+  @JoinTable()
+    labels: LabelTable[]
 }

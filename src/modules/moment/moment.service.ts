@@ -2,12 +2,15 @@ import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { type DeleteResult, type InsertResult, Repository, type UpdateResult } from 'typeorm'
 import { MomentTable } from './moment.entity'
+import { LabelTable } from '../label/label.entity'
 
 @Injectable()
 export class MomentService {
   constructor (
     @InjectRepository(MomentTable)
-    private readonly momentRepository: Repository<MomentTable>
+    private readonly momentRepository: Repository<MomentTable>,
+    @InjectRepository(LabelTable)
+    private readonly labelRepository: Repository<LabelTable>
   ) {
   }
 
@@ -53,5 +56,30 @@ export class MomentService {
   // 修改moment by id
   changeMomentById (momentId: number, content: string): Promise<UpdateResult> {
     return this.momentRepository.update(momentId, { content })
+  }
+
+  async linkMomentLabel (labels: string[], momentId: number): Promise<MomentTable> {
+    const labelList = []
+    for (const label of labels) {
+      const flag = await this.labelRepository.findOneBy({ title: label })
+      if (flag) {
+        labelList.push(flag)
+      } else {
+        await this.labelRepository.insert({ title: label })
+        labelList.push(new LabelTable())
+      }
+    }
+
+    const moment = new MomentTable()
+    moment.labels = labelList
+    moment.id = momentId
+    return await this.momentRepository.save(moment)
+  }
+
+  isLinkMomentLabel (labelId: number, momentId: number): Promise<MomentTable | null> {
+    return this.momentRepository.findOne({ where: { id: momentId }, relations: ['labels'] })
+    // return this.momentRepository.createQueryBuilder('moment')
+    //   .leftJoinAndSelect('momentRepository.labels', 'labelRepository.moments')
+    //   .getMany()
   }
 }

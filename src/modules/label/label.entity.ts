@@ -1,4 +1,4 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { AppTable } from '../../app.entity'
 import { MomentTable } from '../moment/moment.entity'
 
@@ -16,7 +16,6 @@ export class LabelTable extends AppTable {
   })
     title: string
 
-  @ManyToMany(() => MomentTable)
-  @JoinTable()
-    moments: MomentTable[]
+  @ManyToMany(() => MomentTable, moment => moment.labels)
+    moments: MomentTable
 }

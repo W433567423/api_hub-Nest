@@ -7,7 +7,20 @@ import { LabelTable } from './label.entity'
 export class LabelService {
   constructor (
     @InjectRepository(LabelTable)
-    private readonly momentRepository: Repository<LabelTable>
+    private readonly labelRepository: Repository<LabelTable>
   ) {
   }
+
+  // label是否已经存在
+  // isExistLabel (title: string): Promise<LabelTable | null> {
+  //   return this.labelRepository.findOneBy({ title })
+  // }
+  //
+  // insertLabel (title: string): Promise<InsertResult> {
+  //   return this.labelRepository.insert({ title })
+  // }
+  //
+  // isLinkLabelMoment (title: string, momentId: number): Promise<LabelTable[]> {
+  //   return this.labelRepository.find({ relations: ['moments'] })
+  // }
 }
