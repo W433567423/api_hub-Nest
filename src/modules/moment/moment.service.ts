@@ -27,7 +27,7 @@ export class MomentService {
     return this.momentRepository.find({
       skip: page,
       take: size,
-      relations: ['comments', 'user']
+      relations: ['comments', 'user', 'labels']
     })
   }
 
