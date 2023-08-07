@@ -66,20 +66,27 @@ export class MomentService {
         labelList.push(flag)
       } else {
         await this.labelRepository.insert({ title: label })
-        labelList.push(new LabelTable())
+        labelList.push(await this.labelRepository.findOneBy({ title: label }) as LabelTable)
       }
     }
-
+    const oldLabels = await this.momentRepository.findOne({ where: { id: momentId }, relations: ['labels'] })
+    const ids = oldLabels?.labels.map(item => item?.id)
+    const labelListMap = labelList.filter(
+      // eslint-disable-next-line array-callback-return
+      (item) => {
+        if (!ids?.includes(item.id)) return item
+      }
+    )
     const moment = new MomentTable()
-    moment.labels = labelList
+    moment.labels = [...oldLabels?.labels ?? [], ...labelListMap]
     moment.id = momentId
     return await this.momentRepository.save(moment)
   }
 
-  isLinkMomentLabel (labelId: number, momentId: number): Promise<MomentTable | null> {
-    return this.momentRepository.findOne({ where: { id: momentId }, relations: ['labels'] })
-    // return this.momentRepository.createQueryBuilder('moment')
-    //   .leftJoinAndSelect('momentRepository.labels', 'labelRepository.moments')
-    //   .getMany()
-  }
+  // isLinkMomentLabel (labelId: number, momentId: number): Promise<MomentTable | null> {
+  //   return this.momentRepository.findOne({ where: { id: momentId }, relations: ['labels'] })
+  //   // return this.momentRepository.createQueryBuilder('moment')
+  //   //   .leftJoinAndSelect('momentRepository.labels', 'labelRepository.moments')
+  //   //   .getMany()
+  // }
 }

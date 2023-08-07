@@ -122,7 +122,7 @@ export class MomentController {
   })
   async addLabelsToMoment (@Param('momentId', ParseIntPipe) momentId: number, @Body() reqData: addTagsReqBodyMomentDto, @Req() req: IUserReq) {
     await this.MomentService.linkMomentLabel(reqData.tags, momentId)
-    console.log(await this.MomentService.isLinkMomentLabel(2, 2))
+    // console.log(await this.MomentService.isLinkMomentLabel(2, 2))
     return '新增标签成功'
   }
 }
