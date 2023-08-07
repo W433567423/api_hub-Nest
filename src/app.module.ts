@@ -13,13 +13,15 @@ import { MomentController } from './modules/moment/moment.controller'
 import { MomentService } from './modules/moment/moment.service'
 import { MomentModule } from './modules/moment/moment.module'
 import { CommentModule } from './modules/comment/comment.module'
+import { LabelModule } from './modules/label/label.module'
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(MySQLConfig),
     UserModule,
     MomentModule,
-    CommentModule
+    CommentModule,
+    LabelModule
   ],
   controllers: [AppController, UserController, AuthController, MomentController],
   providers: [AppService, {

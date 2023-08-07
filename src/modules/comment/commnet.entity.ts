@@ -36,11 +36,11 @@ export class CommentTable extends AppTable {
   })
     commentId: number
 
-  @ManyToOne(() => MomentTable, (moment) => moment.comments)
+  @ManyToOne(() => MomentTable)
   @JoinColumn({ name: 'moment_id' })
     moment: MomentTable
 
-  @ManyToOne(() => UserTable, (user) => user.comments)
+  @ManyToOne(() => UserTable)
   @JoinColumn({ name: 'user_id' })
     user: UserTable
 }

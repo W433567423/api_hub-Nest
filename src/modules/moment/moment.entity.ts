@@ -1,7 +1,8 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { UserTable } from '../user/user.entity'
 import { AppTable } from '../../app.entity'
 import { CommentTable } from '../comment/commnet.entity'
+import { LabelTable } from '../label/label.entity'
 
 @Entity('moment')
 export class MomentTable extends AppTable {
@@ -23,10 +24,17 @@ export class MomentTable extends AppTable {
   })
     userId: number
 
-  @ManyToOne(() => UserTable, (user) => user.moments)
+  @ManyToOne(() => UserTable)
   @JoinColumn({ name: 'user_id' })
     user: UserTable
 
   @OneToMany(() => CommentTable, (comment) => comment.moment)
     comments: CommentTable[]
+
+  // @ManyToMany(() => LabelTable)
+  // @JoinTable({ name: 'labelId' })
+  //   labels: LabelTable[]
+
+  @ManyToMany(() => LabelTable)
+    moments: LabelTable[]
 }
