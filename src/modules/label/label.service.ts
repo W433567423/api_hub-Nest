@@ -11,16 +11,18 @@ export class LabelService {
   ) {
   }
 
-  // label是否已经存在
-  // isExistLabel (title: string): Promise<LabelTable | null> {
-  //   return this.labelRepository.findOneBy({ title })
-  // }
-  //
-  // insertLabel (title: string): Promise<InsertResult> {
-  //   return this.labelRepository.insert({ title })
-  // }
-  //
-  // isLinkLabelMoment (title: string, momentId: number): Promise<LabelTable[]> {
-  //   return this.labelRepository.find({ relations: ['moments'] })
-  // }
+  getLabelList (): Promise<LabelTable[]> {
+    return this.labelRepository
+      .createQueryBuilder('label')
+      .select([
+        'label.id',
+        'label.title',
+        'label.createAt',
+        'label.updateAt'
+      ])
+      .addSelect('COUNT(moments.id)', 'momentCount')
+      .leftJoin('label.moments', 'moments')
+      .groupBy('label.id')
+      .getRawMany()
+  }
 }
