@@ -10,4 +10,13 @@ export class FileService {
     private readonly AvatarRepository: Repository<AvatarTable>
   ) {
   }
+
+  getUserAvatar (userId: number) {
+    return this.AvatarRepository
+      .createQueryBuilder('avatar')
+      .select(['avatar.avatarUrl'])
+      .leftJoin('avatar.user', 'user')
+      .where('user.id = :userId', { userId })
+      .getOne()
+  }
 }

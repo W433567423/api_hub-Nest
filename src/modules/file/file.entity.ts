@@ -28,7 +28,7 @@ export class AvatarTable extends AppTable {
   })
     size: string
 
-  @OneToOne(() => UserTable)
+  @OneToOne(() => UserTable, user => user.avatar)
   @JoinColumn({ name: 'user_id' })
     user: UserTable
 }

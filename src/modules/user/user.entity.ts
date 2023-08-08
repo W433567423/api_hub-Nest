@@ -24,7 +24,7 @@ export class UserTable extends AppTable {
   })
     password: string
 
-  @OneToOne(() => AvatarTable)
+  @OneToOne(() => AvatarTable, avatar => avatar.user)
   @JoinColumn({ name: 'avatar_id' })
     avatar: AvatarTable
 
