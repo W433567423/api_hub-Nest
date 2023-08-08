@@ -24,20 +24,44 @@ export class MomentService {
 
   // 查询moment列表
   getMomentList (page: number, size: number): Promise<MomentTable[]> {
-    return this.momentRepository.find({
-      skip: page,
-      take: size,
-      relations: ['comments', 'user', 'labels']
-    })
+    return this.momentRepository.createQueryBuilder('moment')
+      .skip(size * page)
+      .take(size)
+      .select([
+        'moment.id',
+        'moment.content',
+        'moment.createAt',
+        'user.id',
+        'user.username'])
+      .addSelect(
+        'COUNT(labels.id)', 'labelCount')
+      .addSelect(
+        'COUNT(comments.id)', 'commentCount')
+      .leftJoin('moment.user', 'user')
+      .leftJoin('moment.comments', 'comments')
+      .leftJoin('moment.labels', 'labels')
+      .groupBy('moment.id')
+      .getRawMany()
   }
 
   // 查询moment详情
   getMomentDetail (momentId: number): Promise<MomentTable | null> {
-    return this.momentRepository.findOne({
-      select: ['id', 'content', 'content', 'user'],
-      where: { id: momentId },
-      relations: ['comments', 'user']
-    })
+    return this.momentRepository.createQueryBuilder('moment')
+      .select([
+        'moment.id',
+        'moment.content',
+        'moment.createAt',
+        'user.id',
+        'user.username',
+        'comments.id',
+        'comments.content',
+        'comments.userId',
+        'comments.commentId'])
+      .leftJoin('moment.user', 'user')
+      .leftJoin('moment.comments', 'comments')
+      .leftJoin('moment.labels', 'labels')
+      .where('moment.id= :momentId', { momentId })
+      .getOne()
   }
 
   // 查询moment通过userId和momentId
