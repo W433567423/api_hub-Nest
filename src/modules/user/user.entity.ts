@@ -1,7 +1,8 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
 import { AppTable } from '../../app.entity'
 import { MomentTable } from '../moment/moment.entity'
 import { CommentTable } from '../comment/commnet.entity'
+import { AvatarTable } from '../file/file.entity'
 
 @Entity('user')
 export class UserTable extends AppTable {
@@ -22,6 +23,10 @@ export class UserTable extends AppTable {
     name: 'password'
   })
     password: string
+
+  @OneToOne(() => AvatarTable)
+  @JoinColumn({ name: 'avatar_id' })
+    avatar: AvatarTable
 
   @ManyToOne(() => MomentTable, moment => moment.user)
     moments: MomentTable[]

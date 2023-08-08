@@ -8,7 +8,7 @@ import { UserTable } from './user.entity'
   imports: [TypeOrmModule.forFeature([UserTable])],
   providers: [UserService],
   controllers: [UserController],
-  exports: [TypeOrmModule]
+  exports: [TypeOrmModule, UserService]
 })
 export class UserModule {
 }

@@ -32,8 +32,8 @@ export class UserController {
       password: originPassword
     } = user
     const password = md5Password(originPassword)
-    const isExist = (await this.UserService.findByName(username)).length
-    if (isExist !== 0) {
+    const isExist = await this.UserService.findByName(username)
+    if (isExist) {
       throw new HttpException('用户名已被注册', HttpStatus.CONFLICT)
     }
     await this.UserService.create(username, password)

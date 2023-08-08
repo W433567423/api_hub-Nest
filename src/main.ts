@@ -3,6 +3,11 @@ import { AppModule } from './app.module'
 import { SwaggerModule } from '@nestjs/swagger'
 import { swaggerOptions } from './swagger'
 import { ResponseInterceptor } from './common/interceptor/res.interceptor'
+import 'module-alias/register.js'
+// import moduleAlias from 'module-alias'
+// import path from 'path'
+//
+// moduleAlias.addAlias('@src', path.join(__dirname, '/src'))
 
 async function bootstrap () {
   const app = await NestFactory.create(AppModule, {

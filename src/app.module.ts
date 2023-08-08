@@ -14,6 +14,9 @@ import { MomentService } from './modules/moment/moment.service'
 import { MomentModule } from './modules/moment/moment.module'
 import { CommentModule } from './modules/comment/comment.module'
 import { LabelModule } from './modules/label/label.module'
+import { FileController } from './modules/file/file.controller'
+import { FileModule } from './modules/file/file.module'
+import { FileService } from './modules/file/file.service'
 
 @Module({
   imports: [
@@ -21,13 +24,14 @@ import { LabelModule } from './modules/label/label.module'
     UserModule,
     MomentModule,
     CommentModule,
-    LabelModule
+    LabelModule,
+    FileModule
   ],
-  controllers: [AppController, UserController, AuthController, MomentController],
+  controllers: [AppController, UserController, AuthController, MomentController, FileController],
   providers: [AppService, {
     provide: APP_GUARD,
     useClass: AuthGuard
-  }, UserService, MomentService]
+  }, UserService, MomentService, FileService]
 })
 // 中间件
 // export class AppModule implements NestModule {
