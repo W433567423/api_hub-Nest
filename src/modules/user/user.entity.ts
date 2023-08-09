@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn
 import { AppTable } from '../../app.entity'
 import { MomentTable } from '../moment/moment.entity'
 import { CommentTable } from '../comment/commnet.entity'
-import { AvatarTable } from '../file/file.entity'
+import { AvatarTable, PictureTable } from '../file/file.entity'
 
 @Entity('user')
 export class UserTable extends AppTable {
@@ -33,4 +33,7 @@ export class UserTable extends AppTable {
 
   @ManyToOne(() => CommentTable, comment => comment.moment)
     comments: CommentTable[]
+
+  @ManyToOne(() => PictureTable, picture => picture.user)
+    pictures: PictureTable[]
 }
