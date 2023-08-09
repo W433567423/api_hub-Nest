@@ -32,8 +32,7 @@ export class MomentService {
         'moment.content',
         'moment.createAt',
         'user.id',
-        'user.username',
-        'avatar.avatarUrl'])
+        'user.username'])
       .addSelect(
         'COUNT(labels.id)', 'labelCount')
       .addSelect(
@@ -41,7 +40,6 @@ export class MomentService {
       .leftJoin('moment.user', 'user')
       .leftJoin('moment.comments', 'comments')
       .leftJoin('moment.labels', 'labels')
-      .leftJoin('user.avatar', 'avatar')
       .groupBy('moment.id')
       .getRawMany()
   }
