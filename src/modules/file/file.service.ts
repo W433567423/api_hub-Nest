@@ -14,6 +14,14 @@ export class FileService {
   ) {
   }
 
+  saveAvatar (fileUrl: string, mimeType: string, size: string) {
+    const avatar = new AvatarTable()
+    avatar.size = size
+    avatar.mimetype = mimeType
+    avatar.avatarUrl = fileUrl
+    return this.AvatarRepository.save(avatar)
+  }
+
   getUserAvatar (userId: number) {
     return this.AvatarRepository
       .createQueryBuilder('avatar')

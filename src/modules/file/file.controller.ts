@@ -51,7 +51,9 @@ export class FileController {
       Key: `hub/avatar/${req.user.id}-avatar.png`,
       FilePath: filePath
     }) as any
-    await this.UserService.saveAvatar(Location, avatar.mimetype, String(avatar.size) + 'bit', req.user.id)
+    const avatarTable = await this.FileService.saveAvatar(Location, avatar.mimetype, String(avatar.size) + 'bit')
+
+    await this.UserService.saveUserAvatar(avatarTable, req.user.id)
     return '头像上传成功'
   }
 
