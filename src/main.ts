@@ -15,7 +15,7 @@ async function bootstrap () {
     // logger: ['warn', 'error']  打印日志的类别
   })
   // swagger注入
-  SwaggerModule.setup('api', app, SwaggerModule.createDocument(app, swaggerOptions))
+  SwaggerModule.setup('', app, SwaggerModule.createDocument(app, swaggerOptions))
 
   // 注册全局通用响应拦截器
   app.useGlobalInterceptors(new ResponseInterceptor())
