@@ -42,7 +42,6 @@ export class UserService {
       relations: ['avatar']
     }) as UserTable
     user.avatar = avatarTable
-    console.log(user)
     return await this.userRepository.update(userId, user)
   }
 }

@@ -27,7 +27,7 @@ export class FileService {
       .createQueryBuilder('avatar')
       .select(['avatar.avatarUrl'])
       .leftJoin('avatar.user', 'user')
-    // .where('user.id = :userId', { userId })
+      .where('user.id = :userId', { userId })
       .getOne()
   }
 }
