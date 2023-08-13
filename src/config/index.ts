@@ -10,3 +10,4 @@ export const storage = multer.diskStorage({
     cb(null, file.fieldname + '-' + uniqueSuffix)
   }
 })
+export const SERVER_PORT = 3000
