@@ -19,7 +19,7 @@ async function bootstrap () {
   // 注册全局通用响应拦截器
   app.useGlobalInterceptors(new ResponseInterceptor())
 
-  await app.listen(3000)
+  await app.listen(8001)
 }
 
 void bootstrap().then()
