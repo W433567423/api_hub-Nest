@@ -66,6 +66,8 @@ export class FileController {
     description: '成功返回200，失败返回400'
   })
   async getUserAvatar (@Param('userId', ParseIntPipe) userId: number) {
-    return await this.FileService.getUserAvatar(userId)
+    const date = await this.FileService.getUserAvatar(userId)
+    console.log(date)
+    return date
   }
 }

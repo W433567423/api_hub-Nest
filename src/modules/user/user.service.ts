@@ -2,13 +2,15 @@ import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { UserTable } from './user.entity'
-import { AvatarTable } from '../file/file.entity'
+import { AvatarTable } from '../file/avatar.entity'
 
 @Injectable()
 export class UserService {
   constructor (
     @InjectRepository(UserTable)
     private readonly userRepository: Repository<UserTable>
+    // @InjectRepository(AvatarTable)
+    // private readonly avatarRepository: Repository<AvatarTable>
   ) {
   }
 
@@ -35,13 +37,18 @@ export class UserService {
 
   // 保存头像
   async saveAvatar (fileUrl: string, mimeType: string, size: string, userId: number) {
-    const user = await this.userRepository.findOne({ where: { id: userId } }) as UserTable
     const avatar = new AvatarTable()
     avatar.size = size
     avatar.mimetype = mimeType
     avatar.avatarUrl = fileUrl
+    // await this.avatarRepository.save(avatar)
+
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: ['avatar']
+    }) as UserTable
     user.avatar = avatar
     console.log(user)
-    return await this.userRepository.save(user)
+    return await this.userRepository.update(userId, user)
   }
 }

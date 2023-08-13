@@ -2,7 +2,8 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn
 import { AppTable } from '../../app.entity'
 import { MomentTable } from '../moment/moment.entity'
 import { CommentTable } from '../comment/commnet.entity'
-import { AvatarTable, PictureTable } from '../file/file.entity'
+import { AvatarTable } from '../file/avatar.entity'
+import { PictureTable } from '../file/picture.entity'
 
 @Entity('user')
 export class UserTable extends AppTable {
@@ -25,7 +26,7 @@ export class UserTable extends AppTable {
     password: string
 
   @OneToOne(() => AvatarTable, avatar => avatar.user)
-  @JoinColumn({ name: 'avatar_id' })
+  @JoinColumn()
     avatar: AvatarTable
 
   @ManyToOne(() => MomentTable, moment => moment.user)
