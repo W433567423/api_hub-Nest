@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
 import { AppTable } from '../../app.entity'
 import { UserTable } from '../user/user.entity'
 
@@ -59,7 +59,13 @@ export class PictureTable extends AppTable {
   })
     size: string
 
-  @OneToMany(() => UserTable, user => user.pictures)
+  @Column({
+    type: 'int',
+    name: 'user_id'
+  })
+    userId: number
+
+  @ManyToOne(() => UserTable)
   @JoinColumn({ name: 'picture_id' })
     user: UserTable
 }

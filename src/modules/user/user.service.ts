@@ -27,7 +27,10 @@ export class UserService {
 
   // 比对密码
   findByPassword (username: string, password: string): Promise<UserTable[]> {
-    return this.userRepository.findBy({ username, password })
+    return this.userRepository.findBy({
+      username,
+      password
+    })
   }
 
   // 保存头像
@@ -38,6 +41,7 @@ export class UserService {
     avatar.mimetype = mimeType
     avatar.avatarUrl = fileUrl
     user.avatar = avatar
+    console.log(user)
     return await this.userRepository.save(user)
   }
 }

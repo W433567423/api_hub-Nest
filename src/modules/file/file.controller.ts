@@ -38,10 +38,19 @@ export class FileController {
     description: '成功返回200，失败返回400'
   })
   async savaUserAvatar (@Req() req: IUserReq, @UploadedFile() avatar: Express.Multer.File) {
-    const filePath = path.resolve('src/../.uploads', String(req.user.id) + avatar.fieldname)
+    try {
+      await fs.promises.stat('src/../.uploads')
+    } catch (e) {
+      // 不存在文件夹，直接创建 {recursive: true} 这个配置项是配置自动创建多个文件夹
+      await fs.promises.mkdir('src/../.uploads', { recursive: true })
+    }
+    const filePath = path.resolve('src/../.uploads', String(req.user.id) + String(avatar.fieldname))
     fs.writeFileSync(filePath, avatar.buffer)
-    console.log(avatar.mimetype, avatar.size, 'avatar' + avatar.fieldname)
-    const { Location } = await uploadFile({ Key: `hub/avatar/${req.user.id}-avatar.png`, FilePath: filePath }) as any
+    // console.log(avatar.mimetype, avatar.size, 'avatar' + avatar.fieldname)
+    const { Location } = await uploadFile({
+      Key: `hub/avatar/${req.user.id}-avatar.png`,
+      FilePath: filePath
+    }) as any
     await this.UserService.saveAvatar(Location, avatar.mimetype, String(avatar.size) + 'bit', req.user.id)
     return '头像上传成功'
   }
