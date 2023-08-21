@@ -4,8 +4,10 @@ import { SwaggerModule } from '@nestjs/swagger'
 import { swaggerOptions } from './swagger'
 import { ResponseInterceptor } from './common/interceptor/res.interceptor'
 import { SERVER_PORT } from './config'
+import { mkdirUpload } from './utils'
 
 async function bootstrap () {
+  await mkdirUpload()
   const app = await NestFactory.create(AppModule, {
     // logger: ['warn', 'error']  打印日志的类别
   })

@@ -8,15 +8,16 @@ import {
   Post,
   Req,
   UploadedFile,
+  UploadedFiles,
   UseInterceptors
 } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { FileService } from './file.service'
 import { IUserReq } from '../user/user.dto'
-import { FileInterceptor } from '@nestjs/platform-express'
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express'
 import * as fs from 'fs'
 import * as path from 'path'
-import { uploadFile } from '../../utils'
+import { createPicName, uploadFile } from '../../utils'
 import { UserService } from '../user/user.service'
 import { NoAuth } from '../../common/decorators'
 
@@ -38,12 +39,6 @@ export class FileController {
     description: '成功返回200，失败返回400'
   })
   async savaUserAvatar (@Req() req: IUserReq, @UploadedFile() avatar: Express.Multer.File) {
-    try {
-      await fs.promises.stat('src/../.uploads')
-    } catch (e) {
-      // 不存在文件夹，直接创建 {recursive: true} 这个配置项是配置自动创建多个文件夹
-      await fs.promises.mkdir('src/../.uploads', { recursive: true })
-    }
     const filePath = path.resolve('src/../.uploads', String(req.user.id) + String(avatar.fieldname))
     fs.writeFileSync(filePath, avatar.buffer)
     // console.log(avatar.mimetype, avatar.size, 'avatar' + avatar.fieldname)
@@ -69,5 +64,34 @@ export class FileController {
   })
   async getUserAvatar (@Param('userId', ParseIntPipe) userId: number) {
     return await this.FileService.getUserAvatar(userId)
+  }
+
+  @Post('/publishImages/:momentId')
+  @ApiOperation({
+    summary: '用户给说说上传配图'
+  })
+  @UseInterceptors(FilesInterceptor('files'))
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    status: 200,
+    description: '成功返回200，失败返回400'
+  })
+  async savaMomentPictures (@Req() req: IUserReq, @UploadedFiles() files: Express.Multer.File[], @Param('momentId', ParseIntPipe) momentId: number) {
+    console.log(files)
+    files.forEach(item => {
+      console.error(item)
+      console.error(createPicName)
+
+      // const filePath = path.resolve('src/../.uploads', String(req.user.id) + String(avatar.fieldname))
+      // fs.writeFileSync(filePath, avatar.buffer)
+      // // console.log(avatar.mimetype, avatar.size, 'avatar' + avatar.fieldname)
+      // const { Location } = await uploadFile({
+      //   Key: `hub/avatar/${req.user.id}-avatar.png`,
+      //   FilePath: filePath
+      // }) as any
+      // const avatarTable = await this.FileService.saveAvatar(Location, avatar.mimetype, String(avatar.size) + 'bit')
+    })
+    // await this.UserService.saveUserAvatar(avatarTable, req.user.id)
+    return '头像上传成功'
   }
 }

@@ -1,6 +1,7 @@
 import { createHash } from 'crypto'
 import { type ICosConfig } from './type'
 import { COS_BUCKET_NAME, COS_BUCKET_REGION, COS_SECRET_ID, COS_SECRET_KEY } from '../../sercret'
+import * as fs from 'fs'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const COS = require('cos-nodejs-sdk-v5')
 
@@ -31,4 +32,17 @@ const uploadFile = async (config: ICosConfig) => {
   })
 }
 
-export { md5Password, uploadFile }
+const mkdirUpload = async () => {
+  try {
+    await fs.promises.stat('src/../.uploads')
+  } catch (e) {
+    // 不存在文件夹，直接创建 {recursive: true} 这个配置项是配置自动创建多个文件夹
+    console.log('创建uploads文件夹')
+    await fs.promises.mkdir('src/../.uploads', { recursive: true })
+  }
+}
+// 产生随机图片名称
+const createPicName = (preStr?: string, appendStr?: string) => {
+  return (preStr ?? '') + '1' + (appendStr ?? '')
+}
+export { md5Password, uploadFile, mkdirUpload, createPicName }
