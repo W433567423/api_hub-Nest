@@ -10,7 +10,7 @@ import { LabelModule } from '../label/label.module'
   imports: [TypeOrmModule.forFeature([MomentTable]), LabelModule],
   providers: [MomentService, LabelService],
   controllers: [MomentController],
-  exports: [TypeOrmModule]
+  exports: [TypeOrmModule, MomentService]
 })
 export class MomentModule {
 }

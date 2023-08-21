@@ -3,6 +3,7 @@ import { UserTable } from '../user/user.entity'
 import { AppTable } from '../../app.entity'
 import { CommentTable } from '../comment/commnet.entity'
 import { LabelTable } from '../label/label.entity'
+import { PictureTable } from '../file/picture.entity'
 
 @Entity('moment')
 export class MomentTable extends AppTable {
@@ -31,11 +32,10 @@ export class MomentTable extends AppTable {
   @OneToMany(() => CommentTable, (comment) => comment.moment)
     comments: CommentTable[]
 
-  // @ManyToMany(() => LabelTable)
-  // @JoinTable({ name: 'labelId' })
-  //   labels: LabelTable[]
-
   @ManyToMany(() => LabelTable, label => label.moments)
   @JoinTable()
     labels: LabelTable[]
+
+  @OneToMany(() => PictureTable, (pic) => pic.moment)
+    pictures: PictureTable[]
 }

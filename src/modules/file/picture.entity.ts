@@ -1,6 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
 import { AppTable } from '../../app.entity'
 import { UserTable } from '../user/user.entity'
+import { MomentTable } from '../moment/moment.entity'
 
 @Entity('picture')
 export class PictureTable extends AppTable {
@@ -29,6 +30,10 @@ export class PictureTable extends AppTable {
     size: string
 
   @ManyToOne(() => UserTable)
-  @JoinColumn({ name: 'picture_id' })
+  @JoinColumn({ name: 'user_id' })
     user: UserTable
+
+  @ManyToOne(() => MomentTable)
+  @JoinColumn({ name: 'moment_id' })
+    moment: MomentTable
 }

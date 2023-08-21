@@ -2,6 +2,7 @@ import { createHash } from 'crypto'
 import { type ICosConfig } from './type'
 import { COS_BUCKET_NAME, COS_BUCKET_REGION, COS_SECRET_ID, COS_SECRET_KEY } from '../../sercret'
 import * as fs from 'fs'
+import * as dayjs from 'dayjs'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const COS = require('cos-nodejs-sdk-v5')
 
@@ -43,6 +44,6 @@ const mkdirUpload = async () => {
 }
 // 产生随机图片名称
 const createPicName = (preStr?: string, appendStr?: string) => {
-  return (preStr ?? '') + '1' + (appendStr ?? '')
+  return (preStr ?? '') + String(dayjs().second()) + (appendStr ?? '')
 }
 export { md5Password, uploadFile, mkdirUpload, createPicName }

@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   HttpCode,
+  HttpException,
   HttpStatus,
   Param,
   ParseIntPipe,
@@ -19,13 +20,17 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { createPicName, uploadFile } from '../../utils'
 import { UserService } from '../user/user.service'
+import { MomentService } from '../moment/moment.service'
 import { NoAuth } from '../../common/decorators'
+import { type IFileObj } from './type'
+import { type UserTable } from '../user/user.entity'
 
 @Controller('file')
 @ApiTags('文件系统')
 export class FileController {
   constructor (private readonly FileService: FileService,
-    private readonly UserService: UserService) {
+    private readonly UserService: UserService,
+    private readonly MomentService: MomentService) {
   }
 
   @Post('/avatar')
@@ -41,11 +46,11 @@ export class FileController {
   async savaUserAvatar (@Req() req: IUserReq, @UploadedFile() avatar: Express.Multer.File) {
     const filePath = path.resolve('src/../.uploads', String(req.user.id) + String(avatar.fieldname))
     fs.writeFileSync(filePath, avatar.buffer)
-    // console.log(avatar.mimetype, avatar.size, 'avatar' + avatar.fieldname)
     const { Location } = await uploadFile({
       Key: `hub/avatar/${req.user.id}-avatar.png`,
       FilePath: filePath
     }) as any
+    fs.rmSync(filePath)
     const avatarTable = await this.FileService.saveAvatar(Location, avatar.mimetype, String(avatar.size) + 'bit')
 
     await this.UserService.saveUserAvatar(avatarTable, req.user.id)
@@ -77,21 +82,31 @@ export class FileController {
     description: '成功返回200，失败返回400'
   })
   async savaMomentPictures (@Req() req: IUserReq, @UploadedFiles() files: Express.Multer.File[], @Param('momentId', ParseIntPipe) momentId: number) {
-    console.log(files)
-    files.forEach(item => {
-      console.error(item)
-      console.error(createPicName)
+    const fileArr: IFileObj[] = []
+    for (const item of files) {
+      const filePath = path.resolve('src/../.uploads', String(req.user.id) + createPicName('pic-', '.png'))
+      console.error(filePath)
+      fs.writeFileSync(filePath, item.buffer)
+      const { Location } = await uploadFile({
+        Key: `hub/avatar/${req.user.id}-avatar.png`,
+        FilePath: filePath
+      }) as any
+      fs.rmSync(filePath)
+      const fileObj: IFileObj = {
+        location: Location,
+        mimeType: item.mimetype,
+        size: String(item.size) + 'bit'
+      }
+      fileArr.push(fileObj)
+    }
+    const momentTables = await this.MomentService.getMomentByUserIdAndMomentId(req.user.id, momentId)
 
-      // const filePath = path.resolve('src/../.uploads', String(req.user.id) + String(avatar.fieldname))
-      // fs.writeFileSync(filePath, avatar.buffer)
-      // // console.log(avatar.mimetype, avatar.size, 'avatar' + avatar.fieldname)
-      // const { Location } = await uploadFile({
-      //   Key: `hub/avatar/${req.user.id}-avatar.png`,
-      //   FilePath: filePath
-      // }) as any
-      // const avatarTable = await this.FileService.saveAvatar(Location, avatar.mimetype, String(avatar.size) + 'bit')
-    })
-    // await this.UserService.saveUserAvatar(avatarTable, req.user.id)
+    if (!momentTables.length) {
+      throw new HttpException('moment不存在或无权限', HttpStatus.UNAUTHORIZED)
+    }
+
+    const userTable = await this.UserService.findByName(req.user.username) as UserTable
+    console.log(await this.FileService.saveMomentPics(userTable, momentTables[0], fileArr))
     return '头像上传成功'
   }
 }
