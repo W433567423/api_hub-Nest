@@ -1,6 +1,12 @@
-import { type CanActivate, type ExecutionContext, HttpException, HttpStatus, Injectable } from '@nestjs/common'
+import {
+  type CanActivate,
+  type ExecutionContext,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common'
 import { verify } from 'jsonwebtoken'
-import { PUBLIC_KEY } from '../../../sercret'
+import { PUBLIC_KEY } from '../../config'
 import { IS_PUBLIC_KEY } from '../decorators'
 import { Reflector } from '@nestjs/core'
 
@@ -12,15 +18,12 @@ export class AuthGuard implements CanActivate {
   //   '/user/registry'
   // ]
 
-  constructor (private readonly reflector: Reflector) {
-  }
+  constructor(private readonly reflector: Reflector) {}
 
-  async canActivate (
-    context: ExecutionContext
-  ): Promise<boolean> {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getHandler(),
-      context.getClass()
+      context.getClass(),
     ])
     console.log('\n\n\n')
     if (isPublic) {
@@ -29,13 +32,19 @@ export class AuthGuard implements CanActivate {
     } else {
       console.log('进入鉴权')
       const request = context.switchToHttp().getRequest()
-      const token: string | undefined = context.switchToRpc().getData().headers.token?.replaceAll(' ', '')
+      const token: string | undefined = context
+        .switchToRpc()
+        .getData()
+        .headers.token?.replaceAll(' ', '')
       // if (this.urlList.includes(request.url)) {
       //   return true
       // }
       if (token) {
         try {
-          console.log('鉴权成功', verify(token, PUBLIC_KEY, { algorithms: ['RS256'] }))
+          console.log(
+            '鉴权成功',
+            verify(token, PUBLIC_KEY, { algorithms: ['RS256'] }),
+          )
           request.user = verify(token, PUBLIC_KEY, { algorithms: ['RS256'] })
           return true
         } catch {
@@ -44,7 +53,10 @@ export class AuthGuard implements CanActivate {
         }
       } else {
         console.log('无token')
-        throw new HttpException('没有授权访问,请先登录', HttpStatus.UNAUTHORIZED)
+        throw new HttpException(
+          '没有授权访问,请先登录',
+          HttpStatus.UNAUTHORIZED,
+        )
       }
     }
   }

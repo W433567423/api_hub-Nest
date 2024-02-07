@@ -1,31 +1,27 @@
 {
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "tsconfig.json",
-    //    "tsconfigRootDir": __dirname,
-    "sourceType": "module"
+    "sourceType": "module",
+    "project": ["tsconfig.json", "./commitlint.config.js", ".prettierrc"]
   },
-  "plugins": [
-    "@typescript-eslint/eslint-plugin"
-  ],
+  "plugins": ["@typescript-eslint/eslint-plugin"],
   "extends": [
-    "standard-with-typescript"
+    "standard-with-typescript",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
   ],
   "root": true,
   "env": {
     "node": true,
     "jest": true
   },
-  "ignorePatterns": [
-    ".eslintrc.json"
-  ],
+  "ignorePatterns": [".eslintrc.json"],
   "rules": {
-    "@typescript-eslint/interface-name-prefix": 0,
+    "indent": 0,
+    "no-tabs": 0,
+    "@typescript-eslint/space-before-function-paren": 0,
+    "@typescript-eslint/indent": 0,
     "@typescript-eslint/explicit-function-return-type": 0,
-    "@typescript-eslint/explicit-module-boundary-types": 0,
-    "@typescript-eslint/no-explicit-any": 0,
-    "@typescript-eslint/strict-boolean-expressions": 0,
-    "@typescript-eslint/promise-function-async": 0,
-    "@typescript-eslint/no-unused-vars": 0
+    "@typescript-eslint/strict-boolean-expressions": 0
   }
 }

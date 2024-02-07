@@ -25,13 +25,25 @@ import { FileService } from './modules/file/file.service'
     MomentModule,
     CommentModule,
     LabelModule,
-    FileModule
+    FileModule,
   ],
-  controllers: [AppController, UserController, AuthController, MomentController, FileController],
-  providers: [AppService, {
-    provide: APP_GUARD,
-    useClass: AuthGuard
-  }, UserService, MomentService, FileService]
+  controllers: [
+    AppController,
+    UserController,
+    AuthController,
+    MomentController,
+    FileController,
+  ],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+    UserService,
+    MomentService,
+    FileService,
+  ],
 })
 // 中间件
 // export class AppModule implements NestModule {
@@ -41,5 +53,4 @@ import { FileService } from './modules/file/file.service'
 //       .forRoutes({ path: '/login', method: RequestMethod.POST })
 //   }
 // }
-export class AppModule {
-}
+export class AppModule {}
